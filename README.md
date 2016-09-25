@@ -8,8 +8,8 @@ This style guide outlines the coding conventions of the iOS team at iOasys.
 
 Here are some of the documents from Apple that informed the style guide. If something isn’t mentioned here, it’s probably covered in great detail in one of these:
 
-* [The Objective-C Programming Language](http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html)
-* [Cocoa Fundamentals Guide](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CocoaFundamentals/Introduction/Introduction.html)
+* [The Objective-C Programming Language](https://developer.apple.com/legacy/library/documentation/Cocoa/Conceptual/ObjectiveC/Introduction/introObjectiveC.html#//apple_ref/doc/uid/TP30001163)
+* [Cocoa Fundamentals Guide](https://developer.apple.com/legacy/library/documentation/Cocoa/Conceptual/CocoaFundamentals/Introduction/Introduction.html#//apple_ref/doc/uid/TP40002974-CH1-SW1)
 * [Coding Guidelines for Cocoa](https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html)
 * [iOS App Programming Guide](http://developer.apple.com/library/ios/#documentation/iphone/conceptual/iphoneosprogrammingguide/Introduction/Introduction.html)
 
@@ -79,7 +79,7 @@ UIApplication.sharedApplication.delegate;
 }
 ```
 
-* Other (`if`/`else`/`switch`/`while` etc.) must open on the same line as the statement. The final brace must close on a new line.
+* Other braces (`if`/`else`/`switch`/`while` etc.) must open on the same line as the statement. The final brace must close on a new line.
 
 **For example:**
 ```objc
@@ -91,7 +91,7 @@ if (user.isHappy) {
 ```
 
 * There should be exactly one blank line between methods to aid in visual clarity and organization.
-* Whitespace within methods may separate functionality, though this inclination often indicates an opportunity to split the method into several, smaller methods. In methods with long or verbose names, a single line of whitespace may be used to provide visual separation before the method’s body.
+* Whitespace within methods may separate functionality, though this inclination often indicates an opportunity to split the method into several, smaller methods.
 
 ## Conditionals
 
@@ -280,7 +280,7 @@ Long, descriptive method and variable names are good. **Abbreviations are not go
 UIButton *settingsButton;
 ```
 
-**Not**
+**Not:**
 
 ```objc
 UIButton *sttgsBtn;
@@ -288,7 +288,7 @@ UIButton *sttgsBtn;
 
 Properties and local variables must be camel-case with the leading word being lowercase.
 
-Instance variables must be camel-case with the leading word being lowercase, and must be prefixed with an underscore. This is consistent with instance variables synthesized automatically by LLVM. **If LLVM can synthesize the variable automatically, then let it.**
+Instance variables must be camel-case with the leading word being lowercase, and must be prefixed with an underscore (but you should not create these yourself). This is consistent with instance variables synthesized automatically by LLVM. **If LLVM can synthesize the variable automatically, then let it.**
 
 **For example:**
 
@@ -336,7 +336,7 @@ Categories are recommended to concisely segment functionality and should be name
 @interface NSString (NYTAdditions)
 ```
 
-Methods and properties added in categories MUST be named with an app or organization-specific prefix. This avoids unintentionally overriding an existing method, and it reduces the chance of two categories from different libraries adding a method of the same name. (The Objective-C runtime doesn’t specify which method will be called in the latter case, which can lead to unintended effects.)
+Methods and properties added in categories devem be named with an app or organization-specific prefix. This avoids unintentionally overriding an existing method, and it reduces the chance of two categories from different libraries adding a method of the same name. (The Objective-C runtime doesn’t specify which method will be called in the latter case, which can lead to unintended effects.)
 
 **For example:**
 
@@ -409,7 +409,7 @@ NSNumber *buildingZIPCode = [NSNumber numberWithInteger:10018];
 
 ## `CGRect` Functions
 
-When accessing the `x`, `y`, `width`, or `height` of a `CGRect`, code MUST use the [`CGGeometry` functions](http://developer.apple.com/library/ios/#documentation/graphicsimaging/reference/CGGeometry/Reference/reference.html) instead of direct struct member access. From Apple's `CGGeometry` reference:
+When accessing the `x`, `y`, `width`, or `height` of a `CGRect`, code must use the [`CGGeometry` functions](http://developer.apple.com/library/ios/#documentation/graphicsimaging/reference/CGGeometry/Reference/reference.html) instead of direct struct member access. From Apple's `CGGeometry` reference:
 
 > All functions described in this reference that take CGRect data structures as inputs implicitly standardize those rectangles before calculating their results. For this reason, your applications should avoid directly reading and writing the data stored in the CGRect data structure. Instead, use the functions described here to manipulate rectangles and to retrieve their characteristics.
 
@@ -440,7 +440,6 @@ CGFloat height = frame.size.height;
 Constants are recommended over in-line string literals or numbers, as they allow for easy reproduction of commonly used variables and can be quickly changed without the need for find and replace. Constants must be declared as `static` constants. Constants **must not** be declared as `#define`, leave that only for macros.
 
 **For example:**
-
 ```objc
 static NSString * const NYTAboutViewControllerCompanyName = @"The New York Times Company";
 
@@ -448,7 +447,6 @@ static CGFloat const NYTImageThumbnailHeight = 50.0;
 ```
 
 **Not:**
-
 ```objc
 #define CompanyName @"The New York Times Company"
 
@@ -470,7 +468,7 @@ typedef NS_ENUM(NSInteger, NYTAdRequestState) {
 
 ## Bitmasks
 
-When working with bitmasks, the `NS_OPTIONS` macro MUST be used.
+When working with bitmasks, the `NS_OPTIONS` macro must be used.
 
 **Example:**
 
@@ -611,7 +609,7 @@ Lifecycle methods, when used, should be declared in this order:
 * `viewWillDisappear:`
 * `viewDidDisappear:`
 
-The storyboard ID of view controllers should be the same as the class. A storyboard named `HomeViewController` should a have a storyboard ID `HomeViewController`.
+The storyboard ID of view controllers should be the same as the class. A view controller named `HomeViewController` should a have a storyboard ID `HomeViewController`.
 
 ## Dead Code
 
