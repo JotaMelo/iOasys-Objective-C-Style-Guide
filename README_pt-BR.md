@@ -28,7 +28,6 @@ Aqui estão alguns dos documentos da Apple que influenciaram esse guia. Se algo 
 * [Comentários](#comentários)
 * [Init & Dealloc](#init-e-dealloc)
 * [Literais](#literais)
-* [Funções CGRect](#funções-cgrect)
 * [Constants](#constants)
 * [Tipos Enumerados](#tipos-enumerados)
 * [Bitmasks](#bitmasks)
@@ -241,12 +240,13 @@ Propriedades devem sempre ser usadas em vez de simples variáveis da instancia. 
 #### Qualificadores de Propriedades
 
 As propriedades deve ter no mínimo dois qualificadores. Qualificadores devem estar nessa ordem:
+* ```class```
 * ```weak``` / ```strong``` / ```copy``` / ```assign```
 * ```nonatomic``` / ```atomic```
 * ```readonly```
 * ```nonnull``` / ```nullable```
 
-Primitivos (```BOOL```, ```NSInteger```, ```CGFloat``` etc) sempre serão ```assign```, outlets ```weak``` e blocks ```copy```. Propriedades públicas sempre devem especificar sua nullability.
+Primitivos (```BOOL```, ```NSInteger```, ```CGFloat``` etc) sempre serão ```assign```, outlets e delegates ```weak``` e blocks ```copy```. Propriedades públicas sempre devem especificar sua nullability.
 
 **Por exemplo:**
 ```objc
@@ -407,32 +407,6 @@ NSNumber *shouldUseLiterals = [NSNumber numberWithBool:YES];
 NSNumber *buildingZIPCode = [NSNumber numberWithInteger:10018];
 ```
 
-## Funções `CGRect`
-
-Ao acessar o `x`, `y`, `width` ou `altura` de um `CGRect`, o código deve usar [as funções `CGGeometry`](http://developer.apple.com/library/ios/#documentation/graphicsimaging/reference/CGGeometry/Reference/reference.html) em vez de acesso direto aos membros do struct. Tirado da documentação do `CGGeometry` da Apple:
-
-> All functions described in this reference that take CGRect data structures as inputs implicitly standardize those rectangles before calculating their results. For this reason, your applications should avoid directly reading and writing the data stored in the CGRect data structure. Instead, use the functions described here to manipulate rectangles and to retrieve their characteristics.
-
-**Por exemplo:**
-```objc
-CGRect frame = self.view.frame;
-
-CGFloat x = CGRectGetMinX(frame);
-CGFloat y = CGRectGetMinY(frame);
-CGFloat width = CGRectGetWidth(frame);
-CGFloat height = CGRectGetHeight(frame);
-```
-
-**Incorreto:**
-```objc
-CGRect frame = self.view.frame;
-
-CGFloat x = frame.origin.x;
-CGFloat y = frame.origin.y;
-CGFloat width = frame.size.width;
-CGFloat height = frame.size.height;
-```
-
 ## Constants
 
 Constants são preferiveis em vez de literais de string ou números, já que permitem fácil reprodução de variáveis comumente usadas e podem ser alteradas rapidamente sem a necessidade de um find e replace. Constants devem ser declaradas como constants `static`. Constants **não devem** ser declaradas com o `#define`, deixe isso exlusivamente para macros.
@@ -541,17 +515,22 @@ Singletons devem usar um padrão thread-safe para criar sua instancia compartilh
 ```objc
 + (instancetype)sharedInstance 
 {
-    static id sharedInstance = nil;
-
+    static SomethingManager sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[[self class] alloc] init];
+        sharedInstance = [SomethingManager new];
     });
 
     return sharedInstance;
 }
 ```
 Isso evitará [crashes frequentes](http://cocoasamurai.blogspot.com/2011/04/singletons-your-doing-them-wrong.html).
+
+Lembre também de declarar singletons como class properties:
+
+```objc
+@property (class, nonatomic, readonly) SomethingManager *sharedManager;
+```
 
 ## Imports
 
