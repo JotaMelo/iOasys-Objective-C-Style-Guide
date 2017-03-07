@@ -336,7 +336,7 @@ Categories are recommended to concisely segment functionality and should be name
 @interface NSString (NYTAdditions)
 ```
 
-Methods and properties added in categories devem be named with an app or organization-specific prefix. This avoids unintentionally overriding an existing method, and it reduces the chance of two categories from different libraries adding a method of the same name. (The Objective-C runtime doesn’t specify which method will be called in the latter case, which can lead to unintended effects.)
+Methods and properties added in categories should be named with an app or organization-specific prefix. This avoids unintentionally overriding an existing method, and it reduces the chance of two categories from different libraries adding a method of the same name. (The Objective-C runtime doesn’t specify which method will be called in the latter case, which can lead to unintended effects.)
 
 **For example:**
 
